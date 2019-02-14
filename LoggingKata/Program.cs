@@ -17,7 +17,6 @@ namespace LoggingKata
             var lines = File.ReadAllLines(csvPath);
             //format each line in lines into line[0] = longitude, line[1] = latitude, line[2] = location name
             var frmtlines = lines.Select(x => x.Replace("/", "").Split("...")[0].Split(','));
-            
             var parser = new TacoParser();
             
             

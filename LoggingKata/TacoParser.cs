@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-
 namespace LoggingKata
 {
     /// <summary>
@@ -13,11 +12,23 @@ namespace LoggingKata
         public ITrackable Parse(string[] line)
         {
             TacoBell taco = new TacoBell();
+
+            if( !double.TryParse(line[0], out double longitude) )
+            { logger.LogError($"Parse to Double failed at \"{line[0]}\"");
+                return null;
+            }
+
+            if( !double.TryParse(line[1], out double latitude) )
+            { logger.LogError($"Parse to Double failed at \"{line[1]}\"");
+                return null;
+            }
+
             taco.Name = line[2];
-            taco.Location = new Point(double.Parse(line[0]), double.Parse(line[1])) ;
-            
-            // Do not fail if one record parsing fails, return null
-            return null; // TODO Implement
+            taco.Location = new Point(longitude, latitude) ;
+            Bells.Add(taco);
+
+
+            return taco;
         }
     }
 }
