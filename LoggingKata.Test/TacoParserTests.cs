@@ -23,7 +23,7 @@ namespace LoggingKata.Test
         [InlineData("")]
         public void ShouldFailParse(string str)
         {
-            // TODO: Complete Should Fail Parse
+            
         }
     }
 }
