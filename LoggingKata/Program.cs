@@ -14,13 +14,9 @@ namespace LoggingKata
         {
             logger.LogInfo("Log initialized");
 
-            var lines = File.ReadAllLines(csvPath);
+            var parser = new TacoParser(csvPath);
+            
 
-            logger.LogInfo($"Lines: {lines[0]}");
-
-            var parser = new TacoParser();
-
-            var locations = lines.Select(parser.Parse).ToArray();
 
             // TODO:  Find the two Taco Bells that are the furthest from one another.
             // HINT:  You'll need two nested forloops

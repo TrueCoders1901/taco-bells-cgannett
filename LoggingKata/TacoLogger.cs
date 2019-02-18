@@ -10,7 +10,6 @@ namespace LoggingKata
 
         public void LogFatal(string log, Exception exception = null)
         {
-
             log = ($"Fatal: {log}, Exception {exception}");
 
             if( isConsoleLog )
@@ -19,9 +18,10 @@ namespace LoggingKata
                 Console.WriteLine(log);
                 Console.ResetColor();
             }
-            
+
             AllLogs.Add(log);
         }
+
         public void LogError(string log, Exception exception = null)
         {
             log = ($"ERROR: {log}, Exception {exception}");
@@ -38,7 +38,7 @@ namespace LoggingKata
 
         public void LogWarning(string log)
         {
-            log = "Warning: "+log;
+            log = "Warning: " + log;
 
             if( isConsoleLog )
             {
