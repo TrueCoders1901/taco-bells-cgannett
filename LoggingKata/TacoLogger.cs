@@ -1,32 +1,81 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace LoggingKata
 {
     public class TacoLogger : ILog
     {
+        public static List<string> AllLogs = new List<string>();
+        public static bool isConsoleLog = true;
+
         public void LogFatal(string log, Exception exception = null)
         {
-            Console.WriteLine($"Fatal: {log}, Exception {exception}");
+            log = ($"Fatal: {log}, Exception {exception}");
+
+            if( isConsoleLog )
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine(log);
+                Console.ResetColor();
+            }
+
+            AllLogs.Add(log);
         }
 
         public void LogError(string log, Exception exception = null)
         {
-            Console.WriteLine($"Error: {log}, Exception {exception}");
+            log = ($"ERROR: {log}, Exception {exception}");
+
+            if( isConsoleLog )
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(log);
+                Console.ResetColor();
+            }
+
+            AllLogs.Add(log);
         }
 
         public void LogWarning(string log)
         {
-            Console.WriteLine($"Warning: {log}");
+            log = "Warning: " + log;
+
+            if( isConsoleLog )
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine(log);
+                Console.ResetColor();
+            }
+
+            AllLogs.Add(log);
         }
 
         public void LogInfo(string log)
         {
-            Console.WriteLine($"Info: {log}");
+            log = ($"INFO: {log}");
+
+            if( isConsoleLog )
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine(log);
+                Console.ResetColor();
+            }
+
+            AllLogs.Add(log);
         }
 
         public void LogDebug(string log)
         {
-            Console.WriteLine($"Debug: {log}");
+            log = ($"Debug: {log}");
+
+            if( isConsoleLog )
+            {
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.WriteLine(log);
+                Console.ResetColor();
+            }
+
+            AllLogs.Add(log);
         }
     }
 }
