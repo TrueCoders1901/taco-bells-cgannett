@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.IO;
 
 namespace LoggingKata
@@ -7,22 +9,32 @@ namespace LoggingKata
     /// <summary>
     /// Parses a POI file to locate all the Taco Bells
     /// </summary>
+
     public class TacoParser
     {
-        private readonly ILog logger = new TacoLogger();
-        private string DataPath { get; set; }
+        public static ILog log = new TacoLogger();
         public string[] DataLines { get; set; }
 
         public TacoParser(string datapath)
         {
-            logger.LogInfo($"Reading data from file at {datapath}");
-            this.DataPath = datapath;
-            this.DataLines = File.ReadAllLines(DataPath);
+            log.LogInfo("TacoParser Object initialized");
+
+            log.LogInfo($"Reading data from file at {datapath}");
+
+            if( File.Exists(datapath) )
+            {
+               DataLines = File.ReadAllLines(datapath).Select(x => (x.Replace("/", "").Split("..."))[0]).ToArray();
+            }
+            else
+            {
+                log.LogFatal($"Cannot locate file at {datapath}", new FileLoadException());
+            }
+            
         }
 
-        public static ITrackable ParseLine(string[] line)
+        public static TacoBell ParseLine(string[] line)
         {
-            TacoLogger log = new TacoLogger();
+            
             if( line.Length < 3 )
             {
                 log.LogError("TacoBell.ParseLine requires a single string or string array with at least 3 indices.");
@@ -39,7 +51,7 @@ namespace LoggingKata
 
                 try
                 {
-                    var rx = new System.Text.RegularExpressions.Regex(@"[^\d\.]");
+                    var rx = new System.Text.RegularExpressions.Regex(@"[^\d\.\-]");
 
                     double line0 = double.Parse(rx.Replace(line[0], ""));
                     double line1 = double.Parse(rx.Replace(line[1], ""));
@@ -52,7 +64,7 @@ namespace LoggingKata
             }
         }
 
-        public static ITrackable ParseLine(string line)
+        public static TacoBell ParseLine(string line)
         {
             return TacoParser.ParseLine(line.Split(','));
         }

@@ -12,7 +12,7 @@ namespace LoggingKata
         public string Name { get; set; }
         public Point Location { get; set; }
         public TacoLogger Log { get; set; }
-        public GeoCoordinate Coordinate { get; set; }
+
         public static List<TacoBell> GetTacoBells = new List<TacoBell>();
 
         public TacoBell(string name, Point loc)
@@ -20,7 +20,6 @@ namespace LoggingKata
             this.Name = name;
             this.Location = loc;
             this.Log = new TacoLogger();
-            this.Coordinate = new GeoCoordinate(this.Location.Longitude, this.Location.Latitude);
         }
 
         public TacoBell(string[] line)
@@ -41,11 +40,32 @@ namespace LoggingKata
             }
         }
 
-        /// <summary>
-        /// parses a line of text into a TacoBell object and logs any errors.
-        /// </summary>
-        /// <param name="line"> csv string or string[>=3] with values {double, double, string} </param>
-        /// <returns>new TacoBell object</returns>
+        public static TacoBell[] MaxDistance()
+        {
+            TacoBell max1 = GetTacoBells[0];
+            TacoBell max2 = GetTacoBells[1];
+
+            foreach( var bell1 in GetTacoBells )
+            {
+                foreach( var bell2 in GetTacoBells )
+                {
+                    if( max1.GetDistance(max2) < bell1.GetDistance(bell2) )
+                    {
+                        max1 = bell1;
+                        max2 = bell2;
+                    }
+                }
+
+            }
+            return new TacoBell[] { max1, max2 };
+        }
+
+        public double GetDistance(ITrackable other)
+        {
+            var Coordinate = new GeoCoordinate(this.Location.Longitude, this.Location.Latitude);
+            var othercoord = new GeoCoordinate(other.Location.Longitude, other.Location.Latitude);
+            return Coordinate.GetDistanceTo(othercoord);
+        }
 
         public static void ConsoleWriteAllBells()
         {

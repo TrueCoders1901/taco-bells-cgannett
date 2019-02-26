@@ -10,8 +10,8 @@
 
         public Point(double x, double y)
         {
-            this.Latitude = x;
-            this.Longitude = y;
+            this.Longitude = x;
+            this.Latitude = y;
         }
     }
 }

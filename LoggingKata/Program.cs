@@ -1,25 +1,28 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.IO;
-using GeoCoordinatePortable;
-
 namespace LoggingKata
 {
-    class Program
+    internal class Program
     {
-        static readonly ILog logger = new TacoLogger();
-        const string csvPath = "TacoBell-US-AL.csv";
+        private static readonly ILog logger = new TacoLogger();
+        private const string csvPath = "TacoBell-US-AL.csv";
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             logger.LogInfo("Log initialized");
 
             var parser = new TacoParser(csvPath);
-            
 
+            foreach(string line in parser.DataLines )
+            {
+                TacoBell.Add(TacoParser.ParseLine(line));
+            }
 
-            // TODO:  Find the two Taco Bells that are the furthest from one another.
-            // HINT:  You'll need two nested forloops
+            var topTwo = TacoBell.MaxDistance();
+            var distance = topTwo[0].GetDistance(topTwo[1]);
+            logger.LogInfo($"MaxDistance({topTwo[0].Name},{topTwo[1].Name}) => {distance}");
+
         }
     }
 }
